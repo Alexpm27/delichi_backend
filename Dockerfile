@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17-alpine
 RUN apk add curl
 VOLUME /tmp
 EXPOSE 8080
