@@ -3,6 +3,7 @@ package com.ampei.delichi.services.impls;
 import com.ampei.delichi.persistance.models.Restaurant;
 import com.ampei.delichi.persistance.repositories.IRestaurantRepository;
 import com.ampei.delichi.services.interfaces.IRestaurantService;
+import com.ampei.delichi.services.interfaces.IReviewService;
 import com.ampei.delichi.web.dtos.requests.CreateRestaurantRequest;
 import com.ampei.delichi.web.dtos.requests.UpdateRestaurantRequest;
 import com.ampei.delichi.web.dtos.responses.BaseResponse;
@@ -17,8 +18,11 @@ public class RestaurantServiceImpl implements IRestaurantService {
 
     private final IRestaurantRepository repository;
 
-    public RestaurantServiceImpl(IRestaurantRepository repository) {
+    private final IReviewService iReviewService;
+
+    public RestaurantServiceImpl(IRestaurantRepository repository, IReviewService iReviewService) {
         this.repository = repository;
+        this.iReviewService = iReviewService;
     }
 
     @Override
@@ -80,7 +84,8 @@ public class RestaurantServiceImpl implements IRestaurantService {
                 .httpStatus(HttpStatus.OK).build();
     }
 
-    private Restaurant findAndEnsureExist(Long id){
+    @Override
+    public Restaurant findAndEnsureExist(Long id){
         return repository.findById(id).orElseThrow(RuntimeException::new);
     }
 
@@ -92,6 +97,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
                 .phoneNumber(restaurant.getPhoneNumber())
                 .kitchen(restaurant.getKitchen())
                 .schedule(restaurant.getSchedule())
+                .reviewResponseList(restaurant.getReviews().stream().map(iReviewService::from).toList())
                 .build();
     }
 
@@ -119,14 +125,28 @@ public class RestaurantServiceImpl implements IRestaurantService {
         return repository.save(restaurant);
     }
 
-    private Restaurant from(UpdateRestaurantRequest request, Long id){
+    private Restaurant from(UpdateRestaurantRequest request, Long id) {
         Restaurant restaurant = findAndEnsureExist(id);
-        restaurant.setName(request.getName());
-        restaurant.setAddress(request.getAddress());
-        restaurant.setKitchen(request.getKitchen());
-        restaurant.setPhoneNumber(request.getPhoneNumber());
-        restaurant.setSchedule(request.getSchedule());
-        return repository.save(restaurant);
+        if (!restaurant.getName().equals(request.getName())) {
+            restaurant.setName(request.getName());
+        }
+        if (!restaurant.getAddress().equals(request.getAddress())) {
+            restaurant.setAddress(request.getAddress());
+        }
+        if (!restaurant.getKitchen().equals(request.getKitchen())) {
+            restaurant.setKitchen(request.getKitchen());
+        }
+        if (!restaurant.getPhoneNumber().equals(request.getPhoneNumber())) {
+            restaurant.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (!restaurant.getSchedule().equals(request.getSchedule())) {
+            restaurant.setSchedule(request.getSchedule());
+        }
+        if (!restaurant.getName().equals(request.getName()) || !restaurant.getAddress().equals(request.getAddress()) || !restaurant.getKitchen().equals(request.getKitchen()) || !restaurant.getPhoneNumber().equals(request.getPhoneNumber()) || !restaurant.getSchedule().equals(request.getSchedule())){
+            return repository.save(restaurant);
+        }else {
+            return restaurant;
+        }
     }
 
 }

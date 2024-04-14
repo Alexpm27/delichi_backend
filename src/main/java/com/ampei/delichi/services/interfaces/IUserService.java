@@ -1,5 +1,6 @@
 package com.ampei.delichi.services.interfaces;
 
+import com.ampei.delichi.persistance.models.User;
 import com.ampei.delichi.web.dtos.requests.CreateUserRequest;
 import com.ampei.delichi.web.dtos.requests.GetUserRequest;
 import com.ampei.delichi.web.dtos.requests.LoginUserRequest;
@@ -17,5 +18,7 @@ public interface IUserService {
     BaseResponse update(UpdateUserRequest request, Long id);
 
     BaseResponse delete (Long id);
+
+    User findAndEnsureExist(Long id);
 
 }

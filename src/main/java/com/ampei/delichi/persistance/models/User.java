@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -35,5 +37,11 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private Long phoneNumber;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 
 }
