@@ -33,12 +33,16 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public BaseResponse login(LoginUserRequest request) {
-        return BaseResponse.builder()
-                .data(from(findUserByEmail(request.getEmail())))
-                .detail("User Logged")
-                .success(Boolean.TRUE)
-                .httpStatus(HttpStatus.OK)
-                .status(HttpStatus.OK.value()).build();
+        User userByEmail = findUserByEmail(request.getEmail());
+        if (userByEmail.getPassword().equals(request.getPassword())){
+            return BaseResponse.builder()
+                    .data(from(userByEmail))
+                    .detail("User Logged")
+                    .success(Boolean.TRUE)
+                    .httpStatus(HttpStatus.OK)
+                    .status(HttpStatus.OK.value()).build();
+        }
+        throw new RuntimeException("Not logged");
     }
 
     @Override
@@ -63,7 +67,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public BaseResponse delete(Long id) {
-        repository.delete(repository.findById(id).orElseThrow(RuntimeException::new));
+        repository.delete(findAndEnsureExist(id));
         return BaseResponse.builder()
                 .detail("User Deleted")
                 .success(Boolean.TRUE)
@@ -73,6 +77,11 @@ public class UserServiceImpl implements IUserService {
 
     private User findUserByEmail(String email) {
         return repository.findByEmail(email).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public User findAndEnsureExist(Long id){
+        return repository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     private UserResponse from(User user) {
@@ -101,13 +110,27 @@ public class UserServiceImpl implements IUserService {
     }
 
     private User updateUser(UpdateUserRequest request, Long id) {
-        User user = repository.findById(id).orElseThrow(RuntimeException::new);
-        user.setName(request.getName());
-        user.setPassword(request.getPassword());
-        user.setEmail(request.getEmail());
-        user.setPhoneNumber(request.getPhoneNumber());
-        user.setLastName(request.getLastName());
-        return repository.save(user);
+        User user = findAndEnsureExist(id);
+        if (!user.getPhoneNumber().equals(request.getPhoneNumber())){
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (!user.getName().equals(request.getName())) {
+            user.setName(request.getName());
+        }
+        if (!user.getEmail().equals(request.getEmail())) {
+            user.setEmail(request.getEmail());
+        }
+        if (!user.getPassword().equals(request.getPassword())) {
+            user.setPassword(request.getPassword());
+        }
+        if (!user.getLastName().equals(request.getLastName())) {
+            user.setLastName(request.getLastName());
+        }
+        if (!user.getPhoneNumber().equals(request.getPhoneNumber()) || !user.getName().equals(request.getName()) || !user.getEmail().equals(request.getEmail()) || !user.getPassword().equals(request.getPassword()) || !user.getLastName().equals(request.getLastName())) {
+            return repository.save(user);
+        }else {
+            return user;
+        }
     }
 
 }

@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -33,5 +35,11 @@ public class Restaurant {
 
     @Column(nullable = false, unique = true)
     private Long phoneNumber;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<Reservation> reservations;
 
 }
