@@ -1,6 +1,5 @@
 package com.ampei.delichi.web.dtos.responses;
 
-import com.ampei.delichi.persistance.models.Review;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -8,27 +7,29 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RestaurantResponse {
+public class ReviewResponse {
 
     private Long id;
 
-    private String name;
+    private LocalDateTime date;
 
-    private String address;
+    private String content;
 
-    private String schedule;
+    private Integer score;
 
-    private String kitchen;
+    private Long userId;
 
-    private Long phoneNumber;
+    private String userName;
 
-    private List<ReviewResponse> reviewResponseList;
+    private Long restaurantId;
+
+    private String restaurantName;
 
 }
