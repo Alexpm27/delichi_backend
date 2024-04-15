@@ -1,5 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
-RUN apk add curl
+FROM openjdk:17-alpine
 VOLUME /tmp
 EXPOSE 8080
 ADD target/delichi-api.jar delichi-api.jar

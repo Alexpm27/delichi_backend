@@ -3,6 +3,7 @@ package com.ampei.delichi.services.impls;
 import com.ampei.delichi.persistance.models.Restaurant;
 import com.ampei.delichi.persistance.repositories.IRestaurantRepository;
 import com.ampei.delichi.services.interfaces.IRestaurantService;
+import com.ampei.delichi.services.interfaces.IReviewService;
 import com.ampei.delichi.web.dtos.requests.CreateRestaurantRequest;
 import com.ampei.delichi.web.dtos.requests.UpdateRestaurantRequest;
 import com.ampei.delichi.web.dtos.responses.BaseResponse;
@@ -18,8 +19,11 @@ public class RestaurantServiceImpl implements IRestaurantService {
 
     private final IRestaurantRepository repository;
 
-    public RestaurantServiceImpl(IRestaurantRepository repository) {
+    private final IReviewService iReviewService;
+
+    public RestaurantServiceImpl(IRestaurantRepository repository, IReviewService iReviewService) {
         this.repository = repository;
+        this.iReviewService = iReviewService;
     }
 
     @Override
