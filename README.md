@@ -92,3 +92,5 @@ spring.datasource.password=Tu-Contraseña</code></pre>
     <h2>Licencia</h2>
 
     <p>Este proyecto está bajo la Licencia MIT. Para más detalles, por favor consulta el archivo <code>LICENSE</code>.</p>
+</body>
+</html>
