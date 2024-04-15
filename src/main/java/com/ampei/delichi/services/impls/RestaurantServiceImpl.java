@@ -19,11 +19,8 @@ public class RestaurantServiceImpl implements IRestaurantService {
 
     private final IRestaurantRepository repository;
 
-    private final IReviewService iReviewService;
-
-    public RestaurantServiceImpl(IRestaurantRepository repository, IReviewService iReviewService) {
+    public RestaurantServiceImpl(IRestaurantRepository repository) {
         this.repository = repository;
-        this.iReviewService = iReviewService;
     }
 
     @Override
