@@ -18,6 +18,4 @@ public interface IReviewService {
 
     BaseResponse delete(Long id);
 
-    ReviewResponse from(Review review);
-
 }
