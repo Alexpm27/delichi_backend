@@ -9,9 +9,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
 @Setter
+@Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReviewResponse {

@@ -83,8 +83,7 @@ public class ReviewServiceImpl implements IReviewService {
         return repository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    @Override
-    public ReviewResponse from(Review review){
+    private ReviewResponse from(Review review){
         return ReviewResponse.builder()
                 .id(review.getId())
                 .date(review.getDate())

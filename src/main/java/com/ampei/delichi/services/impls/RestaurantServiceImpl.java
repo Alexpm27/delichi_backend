@@ -8,6 +8,7 @@ import com.ampei.delichi.web.dtos.requests.CreateRestaurantRequest;
 import com.ampei.delichi.web.dtos.requests.UpdateRestaurantRequest;
 import com.ampei.delichi.web.dtos.responses.BaseResponse;
 import com.ampei.delichi.web.dtos.responses.RestaurantResponse;
+import com.ampei.delichi.web.dtos.responses.ReviewResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -97,8 +98,23 @@ public class RestaurantServiceImpl implements IRestaurantService {
                 .phoneNumber(restaurant.getPhoneNumber())
                 .kitchen(restaurant.getKitchen())
                 .schedule(restaurant.getSchedule())
-                .reviewResponseList(restaurant.getReviews().stream().map(iReviewService::from).toList())
+                .reviewResponseList(reviewResponseList(restaurant))
                 .build();
+    }
+
+    private List<ReviewResponse> reviewResponseList(Restaurant restaurant){
+        return restaurant.getReviews().stream().map(review -> {
+            return ReviewResponse.builder()
+                .id(review.getId())
+                .date(review.getDate())
+                .content(review.getContent())
+                .score(review.getScore())
+                .userId(review.getUser().getId())
+                .userName(review.getUser().getName())
+                .restaurantId(review.getRestaurant().getId())
+                .restaurantName(review.getRestaurant().getName())
+                .build();
+        }).toList();
     }
 
     private List<RestaurantResponse> listRestaurants(){
